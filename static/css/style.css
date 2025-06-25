@@ -1,0 +1,62 @@
+/* Custom CSS for Microphone Animation */
+.mic-button {
+    transition: all 0.2s ease-in-out;
+}
+.mic-button:hover {
+    animation: pulse-mic 1.2s infinite alternate;
+    background-color: #ef4444;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.7); 
+}
+@keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+}
+.hidden-section {
+    display: none;
+}
+.active-section {
+    display: block;
+}
+
+/* Basic styling for searchable dropdown */
+.custom-select-wrapper {
+    position: relative;
+}
+.custom-select-options {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e5e7eb; /* border-gray-200 */
+    border-radius: 0.375rem; /* rounded-md */
+    position: absolute;
+    width: 100%;
+    background-color: white;
+    z-index: 10;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.custom-select-option {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+.custom-select-option:hover {
+    background-color: #e0e7ff; /* indigo-100 */
+}
+
+.pulse-ring {
+    position: absolute;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 9999px;
+    background-color: rgba(59, 130, 246, 0.4); /* blue-500 at 40% */
+    animation: pulse-ring 1.5s infinite;
+    z-index: 0;
+  }
+
+html {
+  scroll-behavior: smooth;
+}

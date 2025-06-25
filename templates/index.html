@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Medical Translator</title>
+
+  <link rel="icon" href="data:image/svg+xml,
+  %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'%3E
+    %3Cpath d='M13 11V6a1 1 0 1 0-2 0v5H6a1 1 0 1 0 0 2h5v5a1 1 0 1 0 2 0v-5h5a1 1 0 1 0 0-2h-5z'/%3E
+  %3C/svg%3E" type="image/svg+xml" />
+
+  <!-- ✅ Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- ✅ SEO Meta Tags -->
+  <meta name="description" content="A real-time healthcare translation web app using voice recognition and generative AI. Speak and translate instantly in multiple languages.">
+  <meta name="keywords" content="medical translation, voice translator, AI healthcare translator, speech to text, real-time multilingual app, open source translator, generative AI">
+  <meta name="author" content="Marc Daniel Caracas">
+  <meta name="robots" content="index, follow">
+
+  
+</head>
+
+<body class="bg-gray-100 font-sans text-gray-800 min-h-screen flex flex-col">
+    <script>
+        // Tailwind config to use Inter font
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <header class="w-full fixed top-0 left-0 bg-indigo-700 z-50 text-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            
+            <!-- Logo -->
+            <h1 class="text-2xl md:text-3xl font-extrabold">Medical Translator</h1>
+            
+            <!-- Hamburger Button (Mobile) -->
+            <button id="menu-toggle" class="sm:hidden text-white text-2xl focus:outline-none" onclick="toggleMenu()">
+            ☰
+            </button>
+
+            <!-- Navigation Links -->
+            <nav id="nav-menu"
+            class="hidden sm:flex flex-col sm:flex-row absolute sm:static top-full left-0 w-full sm:w-auto bg-indigo-700 sm:bg-transparent shadow sm:shadow-none space-y-2 sm:space-y-0 sm:space-x-4 px-4 sm:px-0 pt-4 sm:pt-0 pb-4 sm:pb-0 transition-all duration-300 ease-in-out">
+            <a href="#" class="block sm:inline px-3 py-2 rounded-md hover:bg-indigo-600">Home</a>
+            <a href="#speak-section" class="block sm:inline px-3 py-2 rounded-md hover:bg-indigo-600">Speak</a>
+            <a href="#translate-section" class="block sm:inline px-3 py-2 rounded-md hover:bg-indigo-600">Translate</a>
+            <a href="#listen-section"  class="block sm:inline px-3 py-2 rounded-md hover:bg-indigo-600">Listen</a>
+            </nav>
+
+        </div>
+    </header>
+
+
+
+   <main class="flex-grow pt-28 px-4 md:px-8">
+        <section id="home-section" class="min-h-[calc(100vh-7rem)] flex items-center max-w-6xl mx-auto px-4 md:px-8">
+  
+            <!-- Hero Grid Layout -->
+            <div class="w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                
+                <!-- Left: Title + Description + CTA -->
+                <div class="md:col-span-6 text-center md:text-left space-y-4">
+                <h2 class="text-4xl font-extrabold text-indigo-700">
+                    Real-Time Medical Translator
+                </h2>
+                <p class="text-lg text-gray-700">
+                    Break language barriers in healthcare with AI-powered voice recognition and real-time translation.
+                </p>
+                <a href="#translate-section">
+                    <button class="mt-4 bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-3 rounded-md text-lg font-semibold shadow transition">
+                    Start Translating
+                    </button>
+                </a>
+                </div>
+
+                <!-- Right: Icon (only visible on md and up) -->
+                <div class="md:col-span-6 hidden md:flex justify-center">
+                <img src="static\images\13246753_5174525.svg" 
+                    alt="Medical AI Illustration" 
+                    class="w-full" />
+                </div>
+
+            </div>
+        </section>
+
+
+       <!-- Speak Section -->
+        <section  class="max-w-6xl mx-auto w-full bg-white p-8 rounded-lg shadow-xl space-y-8 hidden-section">
+        <!-- Title -->
+        <h3 id="speak-section" class="text-4xl font-bold text-indigo-700 text-center">Speak Your Medical Terms</h3>
+
+        <!-- Grid Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-2 pt-6 gap-8 items-start">
+        
+        <div class="relative flex flex-col items-center space-y-4">
+            <!-- Animated ring (only shown when speaking) -->
+            <div id="micPulse" class="pulse-ring hidden"></div>
+
+                <!-- Actual mic button -->
+                <button id="micButton" onclick="startRecognition()"
+                    class="relative z-10 mic-button bg-blue-500 text-white rounded-full w-32 h-32 flex items-center justify-center text-5xl shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300">
+                    <i class="fas fa-microphone"></i>
+                </button>
+
+                <p id="micStatus" class="text-center text-sm text-gray-700">
+                    Click to start speaking
+                </p>
+                </div>
+
+                <!-- Right: Transcript + CTA -->
+                <div class="flex flex-col w-full space-y-4">
+                <label for="original" class="text-sm font-semibold text-gray-700">
+                    Original Transcript:
+                </label>
+                <textarea id="original"
+                    class="w-full p-4 border border-gray-300 rounded-lg bg-gray-50 min-h-[200px] resize-y focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    placeholder="Your spoken words will appear here..."></textarea>
+
+                <a href="#translate-section" class="self-end">
+                    <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-md font-semibold shadow transition">
+                    Translate Voice
+                    </button>
+                </a>
+                </div>
+
+            </div>
+        </section>
+
+
+        <div class="my-16 border-t border-gray-300 w-full max-w-6xl mx-auto"></div>
+
+
+        <!-- Translate Section -->
+        <section  class="max-w-6xl mx-auto w-full bg-white p-8 rounded-lg shadow-xl space-y-8 hidden-section">
+
+            <h3 id="translate-section" class="text-4xl font-bold text-center text-indigo-700">Translate Your Transcript</h3>
+
+            <!-- Transcript & Language Selection -->
+            <div class="flex flex-col md:flex-row gap-6">
+
+                <!-- Left: Transcript Input -->
+                <div class="flex-1">
+                    <label for="transcriptToTranslate" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Transcript to Translate:
+                    </label>
+                    <textarea id="transcriptToTranslate"
+                        class="w-full p-4 border border-gray-300 rounded-lg bg-gray-50 min-h-[175px] resize-y focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        placeholder="Text from 'Speak' section appears here or type manually..."></textarea>
+                </div>
+
+                <!-- Right: Language Select + Translate Button -->
+                <div class="flex-1 flex flex-col justify-between space-y-3">
+                    <div>
+                        <label for="languageSearch" class="block text-sm font-semibold text-gray-700 mb-2">Target Language:</label>
+                        <input type="text" id="languageSearch"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        placeholder="Search or select language..." oninput="filterLanguages()" autocomplete="off">
+
+                    <select id="languageSelect"
+                    class="mt-2 w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-800 focus:outline-none">
+                    <!-- Options will be injected dynamically -->
+                    </select>
+                </div>
+
+                <!-- Inline Translate Button -->
+                <button onclick="sendToTranslate()"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md focus:outline-none focus:ring-4 focus:ring-indigo-300 flex justify-center items-center gap-2">
+                    <span id="translateBtnText">Translate Text</span>
+                    <span id="translateLoader" class="hidden loader border-2 border-t-2 border-white border-t-transparent rounded-full w-5 h-5 animate-spin"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 🔹 Divider Line -->
+        <hr class="border-t border-gray-300 my-2" />
+
+        <!-- Translated Output -->
+        <div>
+            <label for="translated" class="block text-sm font-semibold text-gray-700 mb-2">Translated Output:</label>
+            <textarea id="translated"
+            class="w-full p-4 border border-gray-300 rounded-lg bg-gray-50 min-h-[150px] resize-y focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            placeholder="Translated text will appear here..." readonly></textarea>
+
+            <p id="translateStatus" class="text-sm mt-2 text-green-600 hidden">Translation complete.</p>
+            <p id="translateError" class="text-sm mt-2 text-red-600 hidden">Translation failed. Please try again.</p>
+        </div>
+
+        <!-- Proceed Button -->
+        <div class="text-right pt-4 border-t border-gray-200">
+            <a href="#listen-section">
+            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-semibold transition">
+                Speak Translation
+            </button>
+            </a>
+        </div>
+    </section>
+
+    <div class="my-16 border-t border-gray-300 w-full max-w-6xl mx-auto"></div>
+
+    <!-- Listen Section -->
+    <section  class="max-w-6xl mx-auto w-full bg-white p-8 rounded-lg shadow-xl space-y-8 hidden-section">
+    <h3 id="listen-section" class="text-4xl font-bold text-center text-indigo-700">Listen to Translation</h3>
+
+    <!-- Search and Filter -->
+    <div class="flex flex-col sm:flex-row gap-4">
+        <input type="text" id="voiceSearch" placeholder="Search voice name or country..." oninput="filterVoices()"
+        class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring focus:ring-indigo-200" />
+        <select id="countryFilter" onchange="filterVoices()"
+        class="w-48 p-3 border border-gray-300 rounded-lg bg-white text-gray-800">
+        <option value="">All Countries</option>
+        <!-- Options will be dynamically added -->
+        </select>
+    </div>
+
+    <!-- Speaker Grid -->
+    <div id="voiceOptions" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 pt-2">
+        <!-- Injected by JS -->
+    </div>
+
+    <!-- Play Button -->
+    <div class="text-center">
+        <button onclick="speakTranslation()"
+        class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md transition">
+         Play Translation
+        </button>
+        <p id="ttsError" class="text-sm mt-4 text-red-600 hidden"></p>
+    </div>
+    </section>
+
+
+
+
+        
+
+    </main>
+
+
+    
+
+  <!-- External JS -->
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

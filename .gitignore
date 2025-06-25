@@ -1,0 +1,19 @@
+# Ignore virtual environment
+venv/
+.env
+
+# __pycache__ and Python artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.log
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# macOS / VSCode
+.DS_Store
+.vscode/
+
+# Vercel build folders
+.vercel/
