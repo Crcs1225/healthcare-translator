@@ -359,7 +359,9 @@ function speakTranslation() {
     }
     return;
   }
-
+  // ✅ Cancel before new utterance
+  window.speechSynthesis.cancel();
+  
   const utterance = new SpeechSynthesisUtterance(text);
   if (selectedVoice) utterance.voice = selectedVoice;
 
@@ -383,7 +385,6 @@ function speakTranslation() {
     errorMsg.textContent = "";
   }
 
-  window.speechSynthesis.cancel(); // Stop any existing speech
   window.speechSynthesis.speak(utterance);
 }
 
