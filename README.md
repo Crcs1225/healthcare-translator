@@ -4,7 +4,7 @@ A mobile-first web application that enables multilingual communication in health
 
 ## 🚀 Live Demo
 
-🔗 [View Live App](https://your-app.vercel.app)
+🔗 [View Live App](https://healthcare-translator-gules.vercel.app/)
 
 ## 📽️ One-Minute Video Introduction
 
