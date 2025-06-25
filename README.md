@@ -63,20 +63,37 @@ A mobile-first web application that enables multilingual communication in health
 ├── .gitignore           # Security measure
 ├── vercel.json          # Deployment config
 └── README.md
+---
+```bash
 
 ## ⚙️ How to Run Locally
+
 ```bash
+# Clone the repository
 git clone https://github.com/Crcs1225/medical-translator
 cd medical-translator
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Set your Google API Key (create a .env file or export it)
+export GOOGLE_API_KEY=your-api-key  # Or use a .env manager
+
+# Run the app
 python app.py
 
-GOOGLE_API_KEY=your-api-key
+## 🖼️ Screenshots
 
-## Screenshots
-![Screenshot](https://imgur.com/CyMWzyW)
-![Screenshot](https://imgur.com/bW7s0Lo)
-![Screenshot](https://imgur.com/pxuxGlo)
-![Screenshot](https://imgur.com/C8c1NQM)
+### 🎤 Speak Section
+![Speak Section](https://i.imgur.com/CyMWzyW.png)
+
+### 🌐 Translate Section
+![Translate Section](https://i.imgur.com/bW7s0Lo.png)
+
+### 🔊 Listen Section
+![Listen Section](https://i.imgur.com/pxuxGlo.png)
+
+### 🏠 Home Page
+![Home Page](https://i.imgur.com/C8c1NQM.png)
 
 
