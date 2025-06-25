@@ -261,6 +261,14 @@ function populateVoices() {
   voiceOptionsDiv.innerHTML = "";
   countryFilter.innerHTML = `<option value="">All Countries</option>`;
 
+  if (voices.length === 0) {
+    document.getElementById("voiceOptions").innerHTML = `
+      <div class="text-red-600 text-sm text-center">
+        No speech synthesis voices available on your device.
+        Please try on a desktop browser like Chrome or Edge.
+      </div>`;
+  }
+
   const googleVoices = voices.filter(v => v.name.includes("Google") && !v.name.includes("Premium"));
   allVoices = googleVoices.length > 0 ? googleVoices : voices.filter(v => !v.name.includes("Premium"));
 
@@ -360,9 +368,13 @@ function speakTranslation() {
   window.speechSynthesis.speak(utterance);
 }
 
-if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+if (speechSynthesis.onvoiceschanged !== undefined) {
   speechSynthesis.onvoiceschanged = populateVoices;
+} else {
+  // Fallback in case the event doesn't fire
+  setTimeout(populateVoices, 500);
 }
+
 //Toggle the navigation menu on smaller screens
 function toggleMenu() {
     const menu = document.getElementById('nav-menu');
