@@ -120,12 +120,13 @@ async function sendToTranslate() {
 
   // Fallback: No voice recorded
   if (!text) {
-    errorMsg.textContent = "No transcript to translate. Please record your voice first.";
-    errorMsg.classList.remove("hidden");
+    const alertBox = document.getElementById("translateAlert");
+    const alertMsg = document.getElementById("translateAlertMessage");
 
-    // Optional: Alert and redirect to Speak section
-    alert("Please record your voice first before translating.");
-    showSection('speak-section');  // This function should control section visibility
+    alertMsg.textContent = "No transcript to translate. Please record your voice first.";
+    alertBox.classList.remove("hidden");
+
+    showSection('speak-section'); // Navigate to speak section
     return;
   }
 
@@ -334,9 +335,15 @@ function filterVoices() {
 // Speak translation using selected voice
 function speakTranslation() {
   const text = document.getElementById("translated").value;
-  const errorDiv = document.getElementById("ttsError"); 
-  if (!text) {
-    alert("No translated text to speak.");
+  const errorBox = document.getElementById("ttsError");
+  const errorMsg = document.getElementById("ttsErrorMessage");
+  // Show UI error if no text
+  if (!text.trim()) {
+    errorMsg.textContent = "No translated text to speak.";
+    errorBox.classList.remove("hidden");
+
+    // Optional: hide after 5 seconds
+    setTimeout(() => errorBox.classList.add("hidden"), 5000);
     return;
   }
 

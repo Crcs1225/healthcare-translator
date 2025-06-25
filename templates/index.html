@@ -244,8 +244,16 @@
 
     </main>
 
+    <div id="translateAlert" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+        <strong class="font-bold">Action Required:</strong>
+        <span class="block sm:inline" id="translateAlertMessage">Please record your voice first before translating.</span>
+    </div>
+    <!-- TTS Error Message -->
+    <div id="ttsError" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <strong class="font-bold">⚠️ Text-to-Speech Error:</strong>
+        <span id="ttsErrorMessage" class="block sm:inline">No translated text to speak.</span>
+    </div>
 
-    
 
   <!-- External JS -->
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
