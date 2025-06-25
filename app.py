@@ -30,6 +30,4 @@ def translate():
         return jsonify({'translated': translated})
     except Exception as e:
         return jsonify({'error': f'Translation failed: {str(e)}'}), 500
-    
-if __name__ == "__main__":
-    app.run(debug=True)
+
