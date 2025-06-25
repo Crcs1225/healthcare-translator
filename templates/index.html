@@ -51,10 +51,10 @@
             <!-- Navigation Links -->
             <nav id="nav-menu"
             class="hidden sm:flex flex-col sm:flex-row absolute sm:static top-full left-0 w-full sm:w-auto bg-indigo-700 sm:bg-transparent shadow sm:shadow-none space-y-2 sm:space-y-0 sm:space-x-4 px-4 sm:px-0 pt-4 sm:pt-0 pb-4 sm:pb-0 transition-all duration-300 ease-in-out">
-            <a href="#" class="block sm:inline px-3 py-2 rounded-md hover:bg-indigo-600">Home</a>
-            <a href="#speak-section" class="block sm:inline px-3 py-2 rounded-md hover:bg-indigo-600">Speak</a>
-            <a href="#translate-section" class="block sm:inline px-3 py-2 rounded-md hover:bg-indigo-600">Translate</a>
-            <a href="#listen-section"  class="block sm:inline px-3 py-2 rounded-md hover:bg-indigo-600">Listen</a>
+            <a href="#" onclick="showSection('home-section')" class="block sm:inline px-3 py-2 rounded-md hover:bg-indigo-600">Home</a>
+            <a href="#" onclick="showSection('speak-section')" class="block sm:inline px-3 py-2 rounded-md hover:bg-indigo-600">Speak</a>
+            <a href="#" onclick="showSection('translate-section')" class="block sm:inline px-3 py-2 rounded-md hover:bg-indigo-600">Translate</a>
+            <a href="#"  onclick="showSection('listen-section')" class="block sm:inline px-3 py-2 rounded-md hover:bg-indigo-600">Listen</a>
             </nav>
 
         </div>
@@ -179,6 +179,11 @@
                     <span id="translateLoader" class="hidden loader border-2 border-t-2 border-white border-t-transparent rounded-full w-5 h-5 animate-spin"></span>
                 </button>
             </div>
+            
+        </div>
+        <div id="translateAlert" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+            <strong class="font-bold">Action Required:</strong>
+            <span class="block sm:inline" id="translateAlertMessage">Please record your voice first before translating.</span>
         </div>
 
         <!-- 🔹 Divider Line -->
@@ -227,6 +232,14 @@
         <!-- Injected by JS -->
     </div>
 
+    <!-- TTS Error UI -->
+    <div id="ttsError" class="hidden flex items-center gap-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-sm sm:text-base">
+    <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-.75-11a.75.75 0 011.5 0v4a.75.75 0 01-1.5 0V7zm.75 6a.75.75 0 100 1.5.75.75 0 000-1.5z" clip-rule="evenodd" />
+    </svg>
+    <span id="ttsErrorMessage"></span>
+    </div>
+
     <!-- Play Button -->
     <div class="text-center">
         <button onclick="speakTranslation()"
@@ -235,6 +248,7 @@
         </button>
         <p id="ttsError" class="text-sm mt-4 text-red-600 hidden"></p>
     </div>
+
     </section>
 
 
@@ -244,16 +258,8 @@
 
     </main>
 
-    <div id="translateAlert" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-        <strong class="font-bold">Action Required:</strong>
-        <span class="block sm:inline" id="translateAlertMessage">Please record your voice first before translating.</span>
-    </div>
-    <!-- TTS Error Message -->
-    <div id="ttsError" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-        <strong class="font-bold">⚠️ Text-to-Speech Error:</strong>
-        <span id="ttsErrorMessage" class="block sm:inline">No translated text to speak.</span>
-    </div>
-
+    
+    
 
   <!-- External JS -->
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>

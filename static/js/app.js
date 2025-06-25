@@ -334,44 +334,44 @@ function filterVoices() {
 
 // Speak translation using selected voice
 function speakTranslation() {
-  const text = document.getElementById("translated").value;
+  const text = document.getElementById("translated")?.value || "";
   const errorBox = document.getElementById("ttsError");
   const errorMsg = document.getElementById("ttsErrorMessage");
-  // Show UI error if no text
-  if (!text.trim()) {
-    errorMsg.textContent = "No translated text to speak.";
-    errorBox.classList.remove("hidden");
 
-    // Optional: hide after 5 seconds
-    setTimeout(() => errorBox.classList.add("hidden"), 5000);
+  // If no text to speak, show UI error
+  if (!text.trim()) {
+    if (errorBox && errorMsg) {
+      errorMsg.textContent = "No translated text to speak.";
+      errorBox.classList.remove("hidden");
+      setTimeout(() => errorBox.classList.add("hidden"), 5000);
+    }
     return;
   }
 
   const utterance = new SpeechSynthesisUtterance(text);
+  if (selectedVoice) utterance.voice = selectedVoice;
 
-  if (selectedVoice) {
-    utterance.voice = selectedVoice;
-  }
+  utterance.volume = 1;
+  utterance.rate = 1;
+  utterance.pitch = 1;
 
-  utterance.volume = 1; // Make sure it's not muted
-  utterance.rate = 1;   // Normal speed
-  utterance.pitch = 1;  // Normal pitch
-
-  // Error Handling
+  // Catch speech synthesis errors
   utterance.onerror = (event) => {
-    console.error("Text-to-speech error:", event.error);
-    if (errorDiv) {
-      errorDiv.textContent = `Text-to-Speech failed: ${event.error}`;
-      errorDiv.classList.remove("hidden");
+    console.error("TTS Error:", event.error);
+    if (errorBox && errorMsg) {
+      errorMsg.textContent = `Text-to-Speech failed: ${event.error}`;
+      errorBox.classList.remove("hidden");
+      setTimeout(() => errorBox.classList.add("hidden"), 5000);
     }
   };
 
-  if (errorDiv) {
-    errorDiv.classList.add("hidden");
-    errorDiv.textContent = "";
+  // Hide previous errors before speaking
+  if (errorBox) {
+    errorBox.classList.add("hidden");
+    errorMsg.textContent = "";
   }
 
-  window.speechSynthesis.cancel(); // Stop any previous speech
+  window.speechSynthesis.cancel(); // Stop any existing speech
   window.speechSynthesis.speak(utterance);
 }
 
@@ -389,17 +389,24 @@ function toggleMenu() {
 }
 //Show a specific section and hide others
 function showSection(sectionId) {
+  // Hide all sections
   document.querySelectorAll("section").forEach(section => {
     section.classList.add("hidden-section");
     section.classList.remove("active-section");
   });
 
+  // Show the selected section
   const active = document.getElementById(sectionId);
-  active?.classList.remove("hidden-section");
-  active?.classList.add("active-section");
+  if (active) {
+    active.classList.remove("hidden-section");
+    active.classList.add("active-section");
 
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Scroll to the section, offsetting fixed header height (~4rem)
+    const offsetTop = active.offsetTop - 80;
+    window.scrollTo({ top: offsetTop > 0 ? offsetTop : 0, behavior: 'smooth' });
+  }
 }
+
 
 
 //DOM for initialization of TTS
