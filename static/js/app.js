@@ -393,3 +393,17 @@ function showSection(sectionId) {
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+
+//DOM for initialization of TTS
+document.addEventListener("DOMContentLoaded", () => {
+  if (typeof speechSynthesis !== "undefined") {
+    // When voices are ready (especially on mobile)
+    speechSynthesis.onvoiceschanged = () => {
+      populateVoices();
+    };
+
+    // Call once in case voices are already available
+    populateVoices();
+  }
+});
